@@ -51,12 +51,12 @@ class Pdos
         if(is_null($this->link))
         {
             $this->link = $this->connection(
-                    $this->config['s']['driver'], 
-                    $this->config['s']['host'],
-                    $this->config['s']['name'], 
-                    $this->config['s']['user'],
-                    $this->config['s']['password'], 
-                    $this->config['s']['port']
+                    $this->config['driver'], 
+                    $this->config['host'],
+                    $this->config['name'], 
+                    $this->config['user'],
+                    $this->config['password'], 
+                    $this->config['port']
             );
         }
         return $this->link;

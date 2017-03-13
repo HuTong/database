@@ -5,13 +5,13 @@ namespace Hutong\Database;
 */
 class Database
 {
-	protected static $instance;
+    protected static $instance;
 
-	public static function getInstance($config, $dbName = 'default')
+    public static function getInstance($config, $dbName = 'default')
     {
         if (!isset(self::$instance[$dbName])) {
             if(isset($config['type'])){
-                $class = "Hutong\Database\Drive\\".$config['type'];
+                $class = "HuTong\Database\Drive\\".$config['type'];
             }else{
                 throw new \Exception('数据库类型不能为空');
             }
