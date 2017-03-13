@@ -18,12 +18,14 @@ class Pdos
     {
     	try {
             $dsn = $driver . ':host=' . $host;
-            if (!empty($port)) {
+            if (!empty($port)) 
+            {
                 $dsn .= ";port=$port";
             }
             $dsn .= ";dbname=$name";
 
-            if(isset($this->config['charset'])){
+            if(isset($this->config['charset']))
+            {
                 $charset = $this->config['charset']; 
             }else{
                $charset = 'utf8'; 
@@ -60,9 +62,9 @@ class Pdos
         return $this->link;
     }
 
-	public function query($sql, $use_master = true)
+	public function query($sql)
 	{
-        $link = $this->getLink($use_master);
+        $link = $this->getLink();
         $sth = $link->prepare($sql);
         $sth->execute();
         
@@ -71,8 +73,9 @@ class Pdos
 
 	public function exec($sql,$lastId = false)
 	{
-        $link = $this->getLink(true);
-        if($lastId){
+        $link = $this->getLink();
+        if($lastId)
+        {
             $link->exec($sql);
             return $link->lastInsertId();
         }else{
@@ -80,27 +83,20 @@ class Pdos
         }
 	}
 
-	public function select($sql, $use_master = false)
+	public function select($sql)
 	{
-        $sth = $this->query($sql, $use_master);
+        $sth = $this->query($sql);
 
         $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
         
         return $result;
 	}
 
-    public function find($sql, $use_master = false)
+    public function find($sql)
     {
-        $result = $this->select($sql, $use_master);
+        $result = $this->select($sql);
         
         return isset($result['0']) ? $result['0'] : array();
-    }
-
-    public function queryScalar($sql, $use_master = false)
-    {
-        $result = $this->find($sql, $use_master);
-
-        return isset($result) ? (int)array_shift($result) : 0;
     }
 
 	public function insert($table, $datas)
@@ -108,9 +104,10 @@ class Pdos
         $values = array();
         $columns = array();
 
-        $link = $this->getLink(true);
+        $link = $this->getLink();
 
-        foreach ($datas as $key => $value) {
+        foreach ($datas as $key => $value) 
+        {
             array_push($columns, $this->column_quote($key));
             array_push($values, $this->fn_quote($value, $link));
         }
@@ -124,16 +121,28 @@ class Pdos
 	{
         $fields = array();
 
-        $link = $this->getLink(true);
+        $link = $this->getLink();
 
-        foreach ($datas as $key => $value) {
+        foreach ($datas as $key => $value) 
+        {
             $fields[] = $this->column_quote($key) . ' = ' . $this->fn_quote($value, $link);
         }
 
         $sql = 'UPDATE "' . $this->prefix . $table . '" SET ' . implode(', ', $fields);
         
-        if(!is_null($where)){
-            $sql .= " where ".$where;
+        if(!is_null($where))
+        {
+            if(is_array($where))
+            {
+                $whereArr = array();
+                foreach ($where as $key => $value) 
+                {
+                    $whereArr[] = "`".$key."` = ".$value;
+                }
+                $sql .= " where ".implode(' AND ', $whereArr);
+            }else{
+                $sql .= " where ".$where;
+            }
         }
 
         return $this->exec($sql);
@@ -143,12 +152,51 @@ class Pdos
 	{
         $sql = 'DELETE FROM "' . $table;
 
-        if(!is_null($where)){
-            $sql .= " where ".$where;
+        if(!is_null($where))
+        {
+            if(is_array($where))
+            {
+                $whereArr = array();
+                foreach ($where as $key => $value) 
+                {
+                    $whereArr[] = "`".$key."` = ".$value;
+                }
+                $sql .= " where ".implode(' AND ', $whereArr);
+            }else{
+                $sql .= " where ".$where;
+            }
         }
 
         return $this->exec($sql);
 	}
+
+    public function begin()
+    {
+        $link = $this->getLink();
+
+        $link->beginTransaction();
+    }
+
+    public function errorCode()
+    {
+        $link = $this->getLink();
+
+        return $link->errorCode();
+    }
+
+    public function rollBack()
+    {
+        $link = $this->getLink();
+
+        $link->rollBack();
+    }
+
+    public function commit()
+    {
+        $link = $this->getLink();
+
+        $link->commit();
+    }
 
     private function quote($string, $link)
     {
