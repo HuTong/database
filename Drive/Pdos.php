@@ -18,7 +18,7 @@ class Pdos
     {
     	try {
             $dsn = $driver . ':host=' . $host;
-            if (!empty($port)) 
+            if (!empty($port))
             {
                 $dsn .= ";port=$port";
             }
@@ -26,9 +26,9 @@ class Pdos
 
             if(isset($this->config['charset']))
             {
-                $charset = $this->config['charset']; 
+                $charset = $this->config['charset'];
             }else{
-               $charset = 'utf8'; 
+               $charset = 'utf8';
             }
 
             $options = array(
@@ -37,7 +37,7 @@ class Pdos
 
             $conn = new \PDO($dsn, $user, $password,$options);
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            
+
             return $conn;
         } catch (\PDOException $e) {
             return false;
@@ -51,11 +51,11 @@ class Pdos
         if(is_null($this->link))
         {
             $this->link = $this->connection(
-                    $this->config['driver'], 
+                    $this->config['driver'],
                     $this->config['host'],
-                    $this->config['name'], 
+                    $this->config['name'],
                     $this->config['user'],
-                    $this->config['password'], 
+                    $this->config['password'],
                     $this->config['port']
             );
         }
@@ -67,7 +67,7 @@ class Pdos
         $link = $this->getLink();
         $sth = $link->prepare($sql);
         $sth->execute();
-        
+
         return $sth;
 	}
 
@@ -88,14 +88,14 @@ class Pdos
         $sth = $this->query($sql);
 
         $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-        
+
         return $result;
 	}
 
     public function find($sql)
     {
         $result = $this->select($sql);
-        
+
         return isset($result['0']) ? $result['0'] : array();
     }
 
@@ -106,7 +106,7 @@ class Pdos
 
         $link = $this->getLink();
 
-        foreach ($datas as $key => $value) 
+        foreach ($datas as $key => $value)
         {
             array_push($columns, $this->column_quote($key));
             array_push($values, $this->fn_quote($value, $link));
@@ -123,19 +123,19 @@ class Pdos
 
         $link = $this->getLink();
 
-        foreach ($datas as $key => $value) 
+        foreach ($datas as $key => $value)
         {
             $fields[] = $this->column_quote($key) . ' = ' . $this->fn_quote($value, $link);
         }
 
         $sql = 'UPDATE "' . $this->prefix . $table . '" SET ' . implode(', ', $fields);
-        
+
         if(!is_null($where))
         {
             if(is_array($where))
             {
                 $whereArr = array();
-                foreach ($where as $key => $value) 
+                foreach ($where as $key => $value)
                 {
                     $whereArr[] = "`".$key."` = ".$value;
                 }
@@ -157,7 +157,7 @@ class Pdos
             if(is_array($where))
             {
                 $whereArr = array();
-                foreach ($where as $key => $value) 
+                foreach ($where as $key => $value)
                 {
                     $whereArr[] = "`".$key."` = ".$value;
                 }
@@ -216,5 +216,11 @@ class Pdos
     public function getRealEscapeString($string)
     {
         return preg_match('/^[A-Z0-9\_]*\([^)]*\)$/', $string) ? $string : addslashes($string);
+    }
+
+	public function __call($method, $parameters)
+    {
+		$link = $this->getLink();
+        return $link->$method(...$parameters);
     }
 }
