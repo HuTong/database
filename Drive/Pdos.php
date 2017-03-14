@@ -89,15 +89,26 @@ class Pdos
 
         $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $result;
+        return $result ? $result : array();
 	}
 
     public function find($sql)
     {
-        $result = $this->select($sql);
+        $sth = $this->query($sql);
 
-        return isset($result['0']) ? $result['0'] : array();
+		$result = $sth->fetch(\PDO::FETCH_ASSOC);
+
+        return $result ? $result : array();
     }
+
+	public function getOne($sql)
+	{
+		$sth = $this->query($sql);
+
+		$result = $sth->fetch(\PDO::FETCH_NUM);
+
+        return isset($result['0']) ? $result['0'] : '';
+	}
 
 	public function insert($table, $datas)
 	{
@@ -211,11 +222,6 @@ class Pdos
     private function fn_quote($string, $link)
     {
         return preg_match('/^[A-Z0-9\_]*\([^)]*\)$/', $string) ? $string : $this->quote($string, $link);
-    }
-
-    public function getRealEscapeString($string)
-    {
-        return preg_match('/^[A-Z0-9\_]*\([^)]*\)$/', $string) ? $string : addslashes($string);
     }
 
 	public function __call($method, $parameters)
