@@ -123,8 +123,8 @@ class Pdos
             array_push($values, $this->fn_quote($value, $link));
         }
 
-        $sql = 'INSERT INTO "' . $table . '" (' . implode(', ', $columns) . ') VALUES (' . implode($values, ', ') . ')';
-
+        $sql = 'INSERT INTO `' . $table . '` (' . implode(', ', $columns) . ') VALUES (' . implode($values, ', ') . ')';
+		
         return $this->exec($sql,true);
 	}
 
@@ -139,7 +139,7 @@ class Pdos
             $fields[] = $this->column_quote($key) . ' = ' . $this->fn_quote($value, $link);
         }
 
-        $sql = 'UPDATE "' . $this->prefix . $table . '" SET ' . implode(', ', $fields);
+        $sql = 'UPDATE `' . $table . '` SET ' . implode(', ', $fields);
 
         if(!is_null($where))
         {
@@ -216,7 +216,7 @@ class Pdos
 
     private function column_quote($string)
     {
-        return '"' . str_replace('.', '"."', preg_replace('/(^#|\(JSON\)\s*)/', '', $string)) . '"';
+        return '`' . str_replace('.', '"."', preg_replace('/(^#|\(JSON\)\s*)/', '', $string)) . '`';
     }
 
     private function fn_quote($string, $link)
