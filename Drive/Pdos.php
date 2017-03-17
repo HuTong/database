@@ -6,8 +6,8 @@ namespace Hutong\Database\Drive;
 
 class Pdos
 {
-	private $config;
-	private $link;
+    private $config;
+    private $link;
 
     public function __construct($config)
     {
@@ -16,7 +16,7 @@ class Pdos
 
     private function connection($driver, $host, $name, $user, $password, $port = null)
     {
-    	try {
+        try {
             $dsn = $driver . ':host=' . $host;
             if (!empty($port))
             {
@@ -62,17 +62,17 @@ class Pdos
         return $this->link;
     }
 
-	public function query($sql)
-	{
+    public function query($sql)
+    {
         $link = $this->getLink();
         $sth = $link->prepare($sql);
         $sth->execute();
 
         return $sth;
-	}
+    }
 
-	public function exec($sql,$lastId = false)
-	{
+    public function exec($sql,$lastId = false)
+    {
         $link = $this->getLink();
         if($lastId)
         {
@@ -81,37 +81,37 @@ class Pdos
         }else{
             return $link->exec($sql);
         }
-	}
+    }
 
-	public function select($sql)
-	{
+    public function select($sql)
+    {
         $sth = $this->query($sql);
 
         $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result ? $result : array();
-	}
+    }
 
     public function find($sql)
     {
         $sth = $this->query($sql);
 
-		$result = $sth->fetch(\PDO::FETCH_ASSOC);
+        $result = $sth->fetch(\PDO::FETCH_ASSOC);
 
         return $result ? $result : array();
     }
 
-	public function getOne($sql)
-	{
-		$sth = $this->query($sql);
+    public function getOne($sql)
+    {
+        $sth = $this->query($sql);
 
-		$result = $sth->fetch(\PDO::FETCH_NUM);
+        $result = $sth->fetch(\PDO::FETCH_NUM);
 
         return isset($result['0']) ? $result['0'] : '';
-	}
+    }
 
-	public function insert($table, $datas)
-	{
+    public function insert($table, $datas)
+    {
         $values = array();
         $columns = array();
 
@@ -124,12 +124,12 @@ class Pdos
         }
 
         $sql = 'INSERT INTO `' . $table . '` (' . implode(', ', $columns) . ') VALUES (' . implode($values, ', ') . ')';
-		
+        
         return $this->exec($sql,true);
-	}
+    }
 
-	public function update($table, $data, $where = null)
-	{
+    public function update($table, $datas, $where = null)
+    {
         $fields = array();
 
         $link = $this->getLink();
@@ -157,11 +157,11 @@ class Pdos
         }
 
         return $this->exec($sql);
-	}
+    }
 
-	public function delete($table, $where = null)
-	{
-        $sql = 'DELETE FROM "' . $table;
+    public function delete($table, $where = null)
+    {
+        $sql = 'DELETE FROM `' . $table . '`';
 
         if(!is_null($where))
         {
@@ -177,9 +177,9 @@ class Pdos
                 $sql .= " where ".$where;
             }
         }
-
+        
         return $this->exec($sql);
-	}
+    }
 
     public function begin()
     {
@@ -224,9 +224,9 @@ class Pdos
         return preg_match('/^[A-Z0-9\_]*\([^)]*\)$/', $string) ? $string : $this->quote($string, $link);
     }
 
-	public function __call($method, $parameters)
+    public function __call($method, $parameters)
     {
-		$link = $this->getLink();
+        $link = $this->getLink();
         return $link->$method(...$parameters);
     }
 }
