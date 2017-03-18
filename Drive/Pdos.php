@@ -124,7 +124,7 @@ class Pdos
         }
 
         $sql = 'INSERT INTO `' . $table . '` (' . implode(', ', $columns) . ') VALUES (' . implode($values, ', ') . ')';
-        
+
         return $this->exec($sql,true);
     }
 
@@ -156,7 +156,9 @@ class Pdos
             }
         }
 
-        return $this->exec($sql);
+        $rs = $this->exec($sql);
+
+        return ($rs === false) ? false : true;
     }
 
     public function delete($table, $where = null)
@@ -177,7 +179,7 @@ class Pdos
                 $sql .= " where ".$where;
             }
         }
-        
+
         return $this->exec($sql);
     }
 
