@@ -15,11 +15,11 @@ class Database
 
         if($dbName)
         {
-            return $this->connection($dbName);
+            return $this->getInstance($dbName);
         }
     }
 
-    public function connection($dbName = null)
+    public function getInstance($dbName = null)
     {
         if(!isset($this->config[$dbName]) || empty($this->config[$dbName]))
         {
