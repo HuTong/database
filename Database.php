@@ -1,22 +1,45 @@
 <?php
-namespace Hutong\Database;
 /**
 * @desc 数据库连接
 */
+namespace Hutong\Database;
+
 class Database
 {
-    protected static $instance;
+    private $config;
+    private $instance;
 
-    public static function getInstance($config, $dbName = 'default')
+    public function __construct($config, $dbName = 'default')
     {
-        if (!isset(self::$instance[$dbName])) {
-            if(isset($config['type'])){
+        $this->config = $config;
+
+        if($dbName)
+        {
+            return $this->connection($dbName);
+        }
+    }
+
+    public function connection($dbName = null)
+    {
+        if(!isset($this->config[$dbName]) || empty($this->config[$dbName]))
+        {
+            throw new \Exception('连接的类型不存在');
+        }
+
+        $config = $this->config[$dbName];
+
+        if (!isset($this->instance[$dbName]))
+        {
+            if (isset($config['type']))
+            {
                 $class = "HuTong\Database\Drive\\".$config['type'];
-            }else{
+            } else {
                 throw new \Exception('数据库类型不能为空');
             }
-            self::$instance[$dbName] = new $class($config);
+
+            $this->instance[$dbName] = new $class($config);
         }
-        return self::$instance[$dbName];
+
+        return $this->instance[$dbName];
     }
 }

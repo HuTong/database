@@ -4,7 +4,9 @@
 */
 namespace Hutong\Database\Drive;
 
-class Pdos
+use HuTong\Database\Contract;
+
+class Pdos implements Contract
 {
     private $config;
     private $link;
