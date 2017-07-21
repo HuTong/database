@@ -18,3 +18,6 @@ database.spider.user       = "root"
 database.spider.password   = "root"
 database.spider.port       = 3306
 database.spider.charset    = utf8
+
+# 学习交流群
+630730920
