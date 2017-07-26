@@ -9,14 +9,9 @@ class Database
     private $config;
     private $instance;
 
-    public function __construct($config, $dbName = 'default')
+    public function __construct($config)
     {
         $this->config = $config;
-
-        if($dbName)
-        {
-            return $this->getInstance($dbName);
-        }
     }
 
     public function getInstance($dbName = null)
