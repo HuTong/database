@@ -16,6 +16,8 @@ class Database
 
     public function getInstance($dbName = null)
     {
+        $dbName = is_null($dbName) ? 'default': $dbName;
+        
         if(!isset($this->config[$dbName]) || empty($this->config[$dbName]))
         {
             throw new \Exception('连接的类型不存在');
