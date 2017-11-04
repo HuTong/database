@@ -1,4 +1,5 @@
 # database
+```
 数据库连接 多库连接配置
 ;数据库配置信息
 database.default.driver     = "mysql"
@@ -18,6 +19,6 @@ database.spider.user       = "root"
 database.spider.password   = "root"
 database.spider.port       = 3306
 database.spider.charset    = utf8
-
-# 学习交流群
+```
+### 学习交流群
 630730920
