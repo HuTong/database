@@ -13,6 +13,8 @@ interface Contract
 
     public function getOne($sql);
 
+    public function getCol($sql);
+
     public function insert($table, $datas);
 
     public function update($table, $datas, $where = null);

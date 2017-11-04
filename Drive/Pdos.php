@@ -112,6 +112,21 @@ class Pdos implements Contract
         return isset($result['0']) ? $result['0'] : '';
     }
 
+    public function getCol($sql)
+    {
+        $sth = $this->query($sql);
+
+        $result = $sth->fetchAll(\PDO::FETCH_NUM);
+
+        $col = array();
+        foreach($result as $val)
+        {
+            $col[] = $val['0'];
+        }
+
+        return $col;
+    }
+
     public function insert($table, $datas)
     {
         $values = array();
