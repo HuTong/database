@@ -116,15 +116,13 @@ class Pdos implements Contract
     {
         $sth = $this->query($sql);
 
-        $result = $sth->fetchAll(\PDO::FETCH_NUM);
-
-        $col = array();
-        foreach($result as $val)
+        $cols = array();
+        while(($col = $sth->fetchColumn(0)))
         {
-            $col[] = $val['0'];
+            $cols[] = $col;
         }
 
-        return $col;
+        return $cols;
     }
 
     public function insert($table, $datas)
