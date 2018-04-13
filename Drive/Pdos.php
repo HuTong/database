@@ -138,6 +138,11 @@ class Pdos implements Contract
             array_push($values, $this->fn_quote($value, $link));
         }
 
+        if(empty($values) || empty($columns))
+        {
+            return false;
+        }
+
         $sql = 'INSERT INTO `' . $table . '` (' . implode(', ', $columns) . ') VALUES (' . implode($values, ', ') . ')';
 
         return $this->exec($sql,true);
@@ -152,6 +157,11 @@ class Pdos implements Contract
         foreach ($datas as $key => $value)
         {
             $fields[] = $this->column_quote($key) . ' = ' . $this->fn_quote($value, $link);
+        }
+
+        if(empty($fields))
+        {
+            return false;
         }
 
         $sql = 'UPDATE `' . $table . '` SET ' . implode(', ', $fields);
