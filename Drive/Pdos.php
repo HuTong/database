@@ -39,7 +39,6 @@ class Pdos implements Contract
 
             $conn = new \PDO($dsn, $user, $password,$options);
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            $conn->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, false);
 
             return $conn;
         } catch (\PDOException $e) {
