@@ -173,7 +173,7 @@ class Pdos implements Contract
                 $whereArr = array();
                 foreach ($where as $key => $value)
                 {
-                    $whereArr[] = "`".$key."` = ".$value;
+                    $whereArr[] = "`".$key."` = '".$value."''";
                 }
                 $sql .= " where ".implode(' AND ', $whereArr);
             }else{
@@ -197,7 +197,7 @@ class Pdos implements Contract
                 $whereArr = array();
                 foreach ($where as $key => $value)
                 {
-                    $whereArr[] = "`".$key."` = ".$value;
+                    $whereArr[] = "`".$key."` = '".$value."'";
                 }
                 $sql .= " where ".implode(' AND ', $whereArr);
             }else{
