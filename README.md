@@ -22,6 +22,7 @@ database.other.port       = 3306
 database.other.charset    = utf8
 ```
 ### 常量配置模式
+```
 array(
     'default' => array(
         'driver' => 'mysql',
@@ -44,5 +45,6 @@ array(
         'charset'   => 'utf8'
     )
 )
+```
 ### 学习交流群
 630730920
