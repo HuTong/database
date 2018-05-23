@@ -39,6 +39,7 @@ class Pdos implements Contract
 
             $conn = new \PDO($dsn, $user, $password,$options);
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $conn->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, false);
 
             return $conn;
         } catch (\PDOException $e) {
@@ -173,7 +174,7 @@ class Pdos implements Contract
                 $whereArr = array();
                 foreach ($where as $key => $value)
                 {
-                    $whereArr[] = "`".$key."` = '".$value."''";
+                    $whereArr[] = "`".$key."` = '".$value."'";
                 }
                 $sql .= " where ".implode(' AND ', $whereArr);
             }else{
