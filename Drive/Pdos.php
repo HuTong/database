@@ -126,7 +126,7 @@ class Pdos implements Contract
         return $cols;
     }
 
-    public function insert($table, $datas)
+    public function insert($table, $datas, $lastId = true)
     {
         $values = array();
         $columns = array();
