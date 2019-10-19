@@ -249,7 +249,7 @@ class Pdos implements Contract
 
     private function fn_quote($string, $link)
     {
-        return preg_match('/^[A-Z0-9\_]*[^)]*$/', $string) ? $string : $this->quote($string, $link);
+        return this->quote($string, $link);
     }
 
     public function __call($method, $parameters)
