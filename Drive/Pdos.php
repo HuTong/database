@@ -144,7 +144,7 @@ class Pdos implements Contract
             return false;
         }
 
-        $sql = 'INSERT INTO `' . $table . '` (' . implode(', ', $columns) . ') VALUES (' . implode($values, ', ') . ')';
+        $sql = 'INSERT INTO `' . $table . '` (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $values) . ')';
 
         return $this->exec($sql, $lastId);
     }
